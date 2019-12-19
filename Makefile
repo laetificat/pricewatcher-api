@@ -21,7 +21,7 @@ test:
 run-webserver:
 	@go run main.go webserver -v=debug
 
-clean:
+clean: imports tidy format
 	@printf "%s" "Cleaning project..."
 	@rm -rf builds
 	@printf " %s\n" "Done!"
@@ -31,3 +31,9 @@ check: test
 
 imports:
 	@goimports -local github.com/golangci/golangci-lint -w .
+
+tidy:
+	@go mod tidy
+
+format:
+	@gofmt -s -w .

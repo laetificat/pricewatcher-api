@@ -86,7 +86,7 @@ func initConfig() {
 		log.Fatal(err)
 	}
 
-	viper.Set("version", "0.0.1")
+	viper.Set("version", "0.1.0")
 
 	c := slogger.Config{
 		Level: viper.GetString("log.minimum_level"),

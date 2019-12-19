@@ -29,7 +29,7 @@ func registerWatchCmd() {
 	watchCmd.PersistentFlags().DurationP(
 		"timeout",
 		"t",
-		10 * time.Minute,
+		10*time.Minute,
 		"the amount of minutes to wait before checking",
 	)
 
