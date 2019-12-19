@@ -1,0 +1,40 @@
+# The database file to use/create.
+database_file = "watchers.db"
+
+[log]
+	# The minimum log level.
+	minimum_level = "info"
+
+	# Sentry configuration
+	[log.sentry]
+		# Enable Sentry logging.
+    	enabled = true
+    	# The DSN you get from Sentry.
+    	dsn = "https://yoursentry@sentry.io/link"
+
+	# Loggly configuration.
+    [log.loggly]
+    	# Enable Loggly logging.
+    	enabled = true
+    	# The token you get from Loggly.
+    	token = "yourtokenhere"
+
+[notification]
+	# Email notification settings.
+	[notification.email]
+		# Enable email notifications.
+		enabled = true
+		# List of addresses to send a notification Email.
+		addresses = [ "example@email" ]
+		# The template to use for the email notifications.
+		template = "templates/notification.htm"
+
+[webserver]
+	# The address for the webserver to listen on.
+	address = "http://localhost:8080"
+
+[watcher]
+	# Timeout in minutes for the watchers to run their checks.
+	timeout = 10
+	# The amount of hours the price timestamp should be in the past before adding it to the queue.
+	check_interval = 24
