@@ -1,13 +1,12 @@
 package cmd
 
 import (
-	"log"
 	"time"
 
 	"github.com/spf13/viper"
 
-	"github.com/laetificat/pricewatcher/internal/watcher"
-	"github.com/laetificat/slogger/pkg/slogger"
+	"github.com/laetificat/pricewatcher-api/internal/log"
+	"github.com/laetificat/pricewatcher-api/internal/watcher"
 	"github.com/spf13/cobra"
 )
 
@@ -34,14 +33,14 @@ func registerWatchCmd() {
 	)
 
 	if err := viper.BindPFlag("watcher.timeout", watchCmd.PersistentFlags().Lookup("timeout")); err != nil {
-		slogger.Fatal(err.Error())
+		log.Fatal(err.Error())
 	}
 
 	rootCmd.AddCommand(watchCmd)
 }
 
 func checkWatchers() {
-	slogger.Debug("Checking if queues need to be filled...")
+	log.Debug("Checking if queues need to be filled...")
 	err := watcher.RunAll()
 	if err != nil {
 		log.Panic(err)

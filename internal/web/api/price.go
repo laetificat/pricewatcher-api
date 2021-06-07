@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/laetificat/pricewatcher/internal/model"
-	"github.com/laetificat/pricewatcher/internal/watcher"
+	"github.com/laetificat/pricewatcher-api/internal/model"
+	"github.com/laetificat/pricewatcher-api/internal/watcher"
 )
 
 /*

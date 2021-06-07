@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"log"
 	"strconv"
 
-	"github.com/laetificat/pricewatcher/internal/watcher"
+	"github.com/laetificat/pricewatcher-api/internal/log"
+	"github.com/laetificat/pricewatcher-api/internal/watcher"
 	"github.com/spf13/cobra"
 )
 

@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/laetificat/slogger/pkg/slogger"
-
-	"github.com/laetificat/pricewatcher/internal/helper"
-	"github.com/laetificat/pricewatcher/internal/watcher"
+	"github.com/laetificat/pricewatcher-api/internal/helper"
+	"github.com/laetificat/pricewatcher-api/internal/log"
+	"github.com/laetificat/pricewatcher-api/internal/watcher"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +19,7 @@ var (
 		Run: func(cmd *cobra.Command, args []string) {
 			if len(args) > 0 {
 				if err := addDomain(args[0], domain); err != nil {
-					slogger.Fatal(err.Error())
+					log.Fatal(err.Error())
 				}
 			} else {
 				_ = cmd.Help()
@@ -41,7 +40,7 @@ func addDomain(url, domain string) error {
 		domain, err = helper.GuessDomain(url)
 		if err != nil {
 			if strings.EqualFold(helper.NoSupportedDomainFoundErrorMessage, err.Error()) {
-				slogger.Info(fmt.Sprintf("Domain '%s' is not supported", domain))
+				log.Info(fmt.Sprintf("Domain '%s' is not supported", domain))
 			}
 		}
 	}
@@ -50,7 +49,7 @@ func addDomain(url, domain string) error {
 		return watcher.Add(domain, url)
 	}
 
-	slogger.Info(fmt.Sprintf("Domain '%s' is not supported", domain))
+	log.Info(fmt.Sprintf("Domain '%s' is not supported", domain))
 
 	return nil
 }

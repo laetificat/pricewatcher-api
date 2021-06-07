@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github.com/laetificat/pricewatcher/cmd"
+	"github.com/laetificat/pricewatcher-api/cmd"
+	"github.com/laetificat/pricewatcher-api/internal/log"
 )
 
 func main() {
 	if err := cmd.Execute(); err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 }

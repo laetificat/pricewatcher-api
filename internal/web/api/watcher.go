@@ -8,10 +8,10 @@ import (
 	"strings"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/laetificat/pricewatcher/internal/helper"
-	"github.com/laetificat/pricewatcher/internal/model"
-	"github.com/laetificat/pricewatcher/internal/watcher"
-	"github.com/laetificat/slogger/pkg/slogger"
+	"github.com/laetificat/pricewatcher-api/internal/helper"
+	"github.com/laetificat/pricewatcher-api/internal/log"
+	"github.com/laetificat/pricewatcher-api/internal/model"
+	"github.com/laetificat/pricewatcher-api/internal/watcher"
 )
 
 /*
@@ -46,13 +46,13 @@ func ListAll(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	priceHistories, err = watcher.List(queryKeys)
 
 	if err != nil {
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 
 	jbody, err := json.Marshal(priceHistories)
 	if err != nil {
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 
@@ -62,7 +62,7 @@ func ListAll(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	_, err = w.Write(jbody)
 	if err != nil {
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 	}
 }
 
@@ -81,7 +81,7 @@ func RunAll(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		err := watcher.RunAll()
 		if err != nil {
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-			slogger.Error(err.Error())
+			log.Error(err.Error())
 			return
 		}
 
@@ -91,7 +91,7 @@ func RunAll(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	iID, err := strconv.Atoi(ParamsID)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 
@@ -99,12 +99,12 @@ func RunAll(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	if err != nil {
 		if strings.EqualFold(err.Error(), "key not found") {
 			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
-			slogger.Info(err.Error())
+			log.Info(err.Error())
 			return
 		}
 
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 }
@@ -126,14 +126,14 @@ func DeleteOne(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	iID, err := strconv.Atoi(id)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 
 	err = watcher.Remove(iID)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 	}
 }
 
@@ -155,7 +155,7 @@ func AddOne(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		givenDomain, err = helper.GuessDomain(givenURL)
 		if err != nil {
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-			slogger.Error(err.Error())
+			log.Error(err.Error())
 			return
 		}
 	}
@@ -163,12 +163,12 @@ func AddOne(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	if helper.IsSupported(givenDomain) {
 		if err := watcher.Add(givenDomain, givenURL); err != nil {
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-			slogger.Error(err.Error())
+			log.Error(err.Error())
 			return
 		}
 	}
 
 	errorTxt := fmt.Sprintf("Given domain '%s' is not supported.", givenDomain)
-	slogger.Info(errorTxt)
+	log.Info(errorTxt)
 	http.Error(w, errorTxt, http.StatusNotAcceptable)
 }

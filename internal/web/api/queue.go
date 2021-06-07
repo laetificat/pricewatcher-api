@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/laetificat/pricewatcher/internal/model"
-	"github.com/laetificat/pricewatcher/internal/queue"
-	"github.com/laetificat/slogger/pkg/slogger"
+	"github.com/laetificat/pricewatcher-api/internal/log"
+	"github.com/laetificat/pricewatcher-api/internal/model"
+	"github.com/laetificat/pricewatcher-api/internal/queue"
 )
 
 /*
@@ -35,14 +35,14 @@ func AddQueueItem(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	err := json.NewDecoder(r.Body).Decode(&responseModel)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 
 	err = queue.Add(queueName, &responseModel)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 }
@@ -61,7 +61,7 @@ func GetQueueItems(w http.ResponseWriter, r *http.Request, p httprouter.Params) 
 	watchers, err := queue.Get(queueName)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 
@@ -72,14 +72,14 @@ func GetQueueItems(w http.ResponseWriter, r *http.Request, p httprouter.Params) 
 	responseBody, err := json.Marshal(responseModel)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 
 	_, err = w.Write(responseBody)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 }
@@ -100,14 +100,14 @@ func GetAvailableQueues(w http.ResponseWriter, r *http.Request, p httprouter.Par
 	response, err := json.Marshal(responseBody)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 
 	_, err = w.Write(response)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 }
@@ -125,21 +125,21 @@ func GetNextItem(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	watcher, err := queue.Next(queueName)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 
 	responseBody, err := json.Marshal(watcher)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 
 	_, err = w.Write(responseBody)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 }

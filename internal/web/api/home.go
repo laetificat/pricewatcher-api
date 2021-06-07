@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/laetificat/slogger/pkg/slogger"
+	"github.com/laetificat/pricewatcher-api/internal/log"
 	"github.com/spf13/viper"
 
 	"github.com/julienschmidt/httprouter"
@@ -35,6 +35,6 @@ func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	_, err = w.Write(body)
 	if err != nil {
-		slogger.Error(err.Error())
+		log.Error(err.Error())
 	}
 }

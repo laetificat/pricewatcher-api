@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/fatih/structs"
-	"github.com/laetificat/pricewatcher/internal/model"
-	"github.com/laetificat/pricewatcher/internal/queue"
-	"github.com/laetificat/slogger/pkg/slogger"
+	"github.com/laetificat/pricewatcher-api/internal/log"
+	"github.com/laetificat/pricewatcher-api/internal/model"
+	"github.com/laetificat/pricewatcher-api/internal/queue"
 	"github.com/spf13/viper"
 
 	bolt "go.etcd.io/bbolt"
@@ -278,7 +278,7 @@ func addToQueue(client *http.Client, v []byte) error {
 		return nil
 	}
 
-	slogger.Debug(fmt.Sprintf("Adding item to queue '%s'", watcher.Domain))
+	log.Debug(fmt.Sprintf("Adding item to queue '%s'", watcher.Domain))
 	res, err := client.Post(
 		viper.GetString("webserver.address")+"/queues/"+queue.GetNameForDomain(watcher.Domain)+"/add",
 		"application/json",

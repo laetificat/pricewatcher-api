@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/laetificat/pricewatcher/internal/watcher"
+	"github.com/laetificat/pricewatcher-api/internal/watcher"
 )
 
 // NoSupportedDomainFoundErrorMessage is the standardized error message.

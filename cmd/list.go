@@ -5,9 +5,9 @@ import (
 	"io"
 	"os"
 
-	"github.com/laetificat/pricewatcher/internal/helper"
-	"github.com/laetificat/pricewatcher/internal/watcher"
-	"github.com/laetificat/slogger/pkg/slogger"
+	"github.com/laetificat/pricewatcher-api/internal/helper"
+	"github.com/laetificat/pricewatcher-api/internal/log"
+	"github.com/laetificat/pricewatcher-api/internal/watcher"
 	"github.com/spf13/cobra"
 )
 
@@ -26,7 +26,7 @@ var (
 					listDomains(os.Stdout)
 				case "watchers":
 					if err := listWatchers(map[string]string{}, os.Stdout); err != nil {
-						slogger.Fatal(err.Error())
+						log.Fatal(err.Error())
 					}
 				default:
 					_ = cmd.Help()

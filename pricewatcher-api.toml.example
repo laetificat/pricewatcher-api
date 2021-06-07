@@ -1,24 +1,6 @@
 # The database file to use/create.
 database_file = "watchers.db"
 
-[log]
-	# The minimum log level.
-	minimum_level = "info"
-
-	# Sentry configuration
-	[log.sentry]
-		# Enable Sentry logging.
-    	enabled = true
-    	# The DSN you get from Sentry.
-    	dsn = "https://yoursentry@sentry.io/link"
-
-	# Loggly configuration.
-    [log.loggly]
-    	# Enable Loggly logging.
-    	enabled = true
-    	# The token you get from Loggly.
-    	token = "yourtokenhere"
-
 [notification]
 	# Email notification settings.
 	[notification.email]

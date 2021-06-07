@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/laetificat/slogger/pkg/slogger"
+	"github.com/laetificat/pricewatcher-api/internal/log"
 )
 
 // LogMiddleWare is the middleware for the http routers to log the requests.
@@ -25,7 +25,7 @@ ServeHTTP wraps the ServeHTTP and adds a logger.
 */
 func (m *LogMiddleWare) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t := time.Now()
-	defer slogger.Info(fmt.Sprintf("Request: %s %s, time taken: %s", r.Method, r.URL.Path, time.Since(t)))
+	defer log.Info(fmt.Sprintf("Request: %s %s, time taken: %s", r.Method, r.URL.Path, time.Since(t)))
 
 	m.next.ServeHTTP(w, r)
 }

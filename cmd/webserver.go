@@ -6,11 +6,11 @@ import (
 	"strings"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/laetificat/pricewatcher/internal/queue"
-	"github.com/laetificat/pricewatcher/internal/watcher"
-	"github.com/laetificat/pricewatcher/internal/web/api"
-	"github.com/laetificat/pricewatcher/internal/web/middleware"
-	"github.com/laetificat/slogger/pkg/slogger"
+	"github.com/laetificat/pricewatcher-api/internal/log"
+	"github.com/laetificat/pricewatcher-api/internal/queue"
+	"github.com/laetificat/pricewatcher-api/internal/watcher"
+	"github.com/laetificat/pricewatcher-api/internal/web/api"
+	"github.com/laetificat/pricewatcher-api/internal/web/middleware"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -35,7 +35,7 @@ func registerWebserverCmd() {
 	)
 
 	if err := viper.BindPFlag("webserver.address", webserverCmd.PersistentFlags().Lookup("address")); err != nil {
-		slogger.Fatal(err.Error())
+		log.Fatal(err.Error())
 	}
 	viper.SetDefault("webserver.address", "http://localhost:8080")
 
@@ -49,12 +49,12 @@ func registerQueues() {
 	for _, v := range watcher.SupportedDomains {
 		queueName := queue.GetNameForDomain(v)
 
-		slogger.Debug(
+		log.Debug(
 			fmt.Sprintf("creating queue '%s'", queueName),
 		)
 
 		if err := queue.Create(queueName); err != nil {
-			slogger.Fatal(err.Error())
+			log.Fatal(err.Error())
 		}
 	}
 }
@@ -63,11 +63,11 @@ func registerQueues() {
 runWebserver registers the routes, adds middlewares and starts listening on the given address and port
 */
 func runWebserver() {
-	slogger.Info("Starting webserver...")
+	log.Info("Starting webserver...")
 
 	router := httprouter.New()
 
-	slogger.Debug("Registering routes...")
+	log.Debug("Registering routes...")
 	api.RegisterHomeHandler(router)
 	api.RegisterWatcherHandler(router)
 	api.RegisterPriceHandler(router)
@@ -75,7 +75,7 @@ func runWebserver() {
 
 	routerWithMiddleWare := middleware.NewLogMiddleWare(router)
 
-	slogger.Info(
+	log.Info(
 		fmt.Sprintf("Server started on %s", viper.GetString("webserver.address")),
 	)
 
@@ -89,7 +89,7 @@ func runWebserver() {
 		"",
 	)
 
-	slogger.Fatal(
+	log.Fatal(
 		http.ListenAndServe(address, routerWithMiddleWare).Error(),
 	)
 }

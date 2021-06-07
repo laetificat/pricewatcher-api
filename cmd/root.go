@@ -2,9 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 
-	"github.com/laetificat/slogger/pkg/slogger"
+	"github.com/laetificat/pricewatcher-api/internal/log"
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -49,7 +48,7 @@ func registerRootCmd() {
 	)
 
 	if err := viper.BindPFlag("log.minimum_level", rootCmd.PersistentFlags().Lookup("verbose")); err != nil {
-		slogger.Fatal(err.Error())
+		log.Fatal(err.Error())
 	}
 	viper.SetDefault("log.minimum_level", "info")
 
@@ -61,7 +60,7 @@ func registerRootCmd() {
 	)
 
 	if err := viper.BindPFlag("database_file", rootCmd.PersistentFlags().Lookup("database")); err != nil {
-		slogger.Fatal(err.Error())
+		log.Fatal(err.Error())
 	}
 	viper.SetDefault("database_file", "watchers.db")
 }
@@ -88,18 +87,5 @@ func initConfig() {
 
 	viper.Set("version", "0.1.0")
 
-	c := slogger.Config{
-		Level: viper.GetString("log.minimum_level"),
-		Sentry: slogger.SentryZapOptions{
-			Enabled: viper.GetBool("log.sentry.enabled"),
-			Dsn:     viper.GetString("log.sentry.dsn"),
-		},
-		Loggly: slogger.LogglyZapOptions{
-			Enabled: viper.GetBool("log.loggly.enabled"),
-			Token:   viper.GetString("log.loggly.token"),
-		},
-	}
-	slogger.SetConfig(c)
-
-	slogger.Debug(fmt.Sprintf("Using config file: %s", viper.ConfigFileUsed()))
+	log.Debug(fmt.Sprintf("Using config file: %s", viper.ConfigFileUsed()))
 }

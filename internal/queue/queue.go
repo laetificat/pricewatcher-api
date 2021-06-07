@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/laetificat/pricewatcher/internal/model"
+	"github.com/laetificat/pricewatcher-api/internal/model"
 )
 
 var queues = map[string]*list.List{}

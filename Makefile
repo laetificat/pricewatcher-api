@@ -19,7 +19,7 @@ test:
 	@gotest ./... -coverprofile=coverage.out -count=1
 
 run-webserver:
-	@go run main.go webserver -v=debug
+	@go run main.go webserver -c ./pricewatcher-api.toml -v=debug
 
 clean: imports tidy format
 	@printf "%s" "Cleaning project..."
