@@ -19,6 +19,7 @@ RegisterWatcherHandler registers the watcher handler.
 */
 func RegisterWatcherHandler(router *httprouter.Router) {
 	router.GET("/watchers", ListAll)
+	router.GET("/watchers/run", RunAll)
 	router.GET("/watchers/run/:id", RunAll)
 	router.GET("/watchers/delete/:id", DeleteOne)
 	router.GET("/watchers/create", AddOne)
@@ -166,6 +167,10 @@ func AddOne(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 			log.Error(err.Error())
 			return
 		}
+
+		w.WriteHeader(http.StatusCreated)
+		w.Write([]byte("{\"message\":\"Watcher created\"}"))
+		return
 	}
 
 	errorTxt := fmt.Sprintf("Given domain '%s' is not supported.", givenDomain)

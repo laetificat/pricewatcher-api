@@ -36,5 +36,5 @@ IsSupported checks if the given domain is present in the list of supported domai
 */
 func IsSupported(domain string) bool {
 	supportedTypes := fmt.Sprintf(",%s,", strings.Join(watcher.SupportedDomains, ","))
-	return !strings.Contains(supportedTypes, fmt.Sprintf(",%s,", domain))
+	return strings.Contains(supportedTypes, fmt.Sprintf(",%s,", domain))
 }
